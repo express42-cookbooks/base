@@ -25,15 +25,18 @@
 # SOFTWARE.
 #
 
-class Chef::Recipe
-  include Express42::Base::Network
+module Chef
+  # extend recipe by Network module
+  class Recipe
+    include Express42::Base::Network
+  end
 end
 
 (node['base']['packages'] + node['base']['extra-packages']).uniq.each do |pkg|
-    package pkg
+  package pkg
 end
 
-if node.chef_environment == 'production' and !node['base']['handler']['mail_to'].empty?
-  chef_gem "pony"
+if node.chef_environment == 'production' && !node['base']['handler']['mail_to'].empty?
+  chef_gem 'pony'
   Chef::Config.exception_handlers = [Express42::MailHandler.new(node['base']['handler']['mail_from'], node['base']['handler']['mail_to'])]
 end
