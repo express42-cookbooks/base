@@ -1,0 +1,6 @@
+name             "base"
+maintainer       "LLC Express 42"
+maintainer_email "info@express42.com"
+license          "MIT"
+description      "Installs/Configures base"
+version          "0.1.2"
