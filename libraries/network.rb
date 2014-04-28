@@ -25,7 +25,7 @@ module Express42
         the_node['network']['interfaces'].each do |interface|
           next if !interface[1]['addresses'] || interface[1]['state'] == 'down'
 
-          ip_addr = interface[1]['addresses'].select { |address, data| data['family'] == 'inet' }.to_a[0]
+          ip_addr = interface[1]['addresses'].select { |_, data| data['family'] == 'inet' }.to_a[0]
           next if ip_addr.nil?
           ip_addr = ip_addr[0]
 
@@ -46,7 +46,7 @@ module Express42
       def net_get_all_ip(the_node = node)
         ips = []
         networks = net_get_networks(the_node)
-        networks.each_pair do |cond, eth_ip_array|
+        networks.each_pair do |_, eth_ip_array|
           eth_ip_array.each do |eth_ip|
             ips << eth_ip[1]
           end
