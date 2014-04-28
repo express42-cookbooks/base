@@ -8,7 +8,7 @@ module Express42
   module Base
     # Network module has methods to detect private and public networks
     module Network
-
+      # rubocop:disable CyclomaticComplexity, MethodLength
       def net_get_networks(the_node = node)
         networks = { private: [], public: [] }
 
@@ -29,11 +29,11 @@ module Express42
           next if ip_addr.nil?
           ip_addr = ip_addr[0]
 
-          if private_conditions.detect { |pc| pc.include?(ip_addr) }
+          if private_conditions.find { |pc| pc.include?(ip_addr) }
             networks[:private] << [interface[0], ip_addr]
             next
           end
-          if !private_conditions.detect { |pc| pc.include?(ip_addr) } && !public_exclusions.each.detect { |pe| pe.include?(ip_addr) }
+          if !private_conditions.find { |pc| pc.include?(ip_addr) } && !public_exclusions.each.find { |pe| pe.include?(ip_addr) }
             networks[:public] << [interface[0], ip_addr]
             next
           end
@@ -41,6 +41,7 @@ module Express42
         end
         networks
       end
+      # rubocop:enable CyclomaticComplexity, MethodLength
 
       def net_get_all_ip(the_node = node)
         ips = []
@@ -59,22 +60,6 @@ module Express42
 
       def net_get_private(the_node = node)
         net_get_networks(the_node)[:private]
-      end
-
-      def get_private_ip_by_role(role)
-        if n = search(:node, "role:#{role} AND chef_environment:#{node.chef_environment}").first
-          net_get_private(n)[0][1]
-        else
-          fail "Role #{role} not found"
-        end
-      end
-
-      def get_public_ip_by_role(role)
-        if n = search(:node, "role:#{role} AND chef_environment:#{node.chef_environment}").first
-          net_get_public(n)[0][1]
-        else
-          fail "Role #{role} not found"
-        end
       end
     end
   end
