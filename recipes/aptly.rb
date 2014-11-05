@@ -1,6 +1,5 @@
 serial = Time.new.strftime("%Y%m%d%H%M")
-#repo_components_list = node['aptly']['repo_components'].*" "
-repo_components_list = "restricted"
+repo_components_list = node['aptly']['repo_components'].*" "
 distname = node['lsb']['codename']
 retention_count = node["aptly"]["retention_count"]
 aptly_dir = node['aptly']['rootdir']
